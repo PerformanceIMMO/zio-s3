@@ -8,5 +8,6 @@ addSbtPlugin("de.heikoseeberger"  % "sbt-header"                % "5.6.5")
 addSbtPlugin("org.scalameta"      % "sbt-mdoc"                  % "2.5.2")
 addSbtPlugin("org.scalameta"      % "sbt-scalafmt"              % "2.5.2")
 addSbtPlugin("dev.zio"            % "zio-sbt-website"           % "0.3.4")
+addSbtPlugin("com.github.sbt"     % "sbt-ci-release"            % "1.6.0")
 
 addDependencyTreePlugin
