@@ -2,7 +2,7 @@ import BuildHelper._
 
 inThisBuild(
   List(
-    organization := "dev.zio",
+    organization := "io.squircles",
     homepage := Some(url("https://zio.dev/zio-s3/")),
     licenses := List("Apache-2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
     developers := List(
@@ -10,12 +10,20 @@ inThisBuild(
     ),
     Test / fork := true,
     (Test / parallelExecution) := false,
-    pgpPassphrase := sys.env.get("PGP_PASSWORD").map(_.toArray),
-    pgpPublicRing := file("/tmp/public.asc"),
-    pgpSecretRing := file("/tmp/secret.asc"),
     scmInfo := Some(
-      ScmInfo(url("https://github.com/zio/zio-s3/"), "scm:git:git@github.com:zio/zio-s3.git")
-    )
+      ScmInfo(url("https://github.com/SquirclesIO/zio-s3/"), "scm:git:git@github.com:SquirclesIO/zio-s3.git")
+    ),
+    publishTo := Some(
+      "GitHub SquirclesIO Apache Maven Packages".at("https://maven.pkg.github.com/SquirclesIO/zio-s3")
+    ),
+    publishMavenStyle := true,
+    credentials += Credentials(
+      "GitHub Package Registry",
+      "maven.pkg.github.com",
+      "SquirclesIO",
+      sys.env.get("GITHUB_TOKEN").getOrElse("")
+    ),
+    version := sys.env.get("VERSION").getOrElse("0.0.1-SNAPSHOT")
   )
 )
 
@@ -65,7 +73,8 @@ lazy val docs = project
     docsPublishBranch := "series/2.x",
     ScalaUnidoc / unidoc / unidocProjectFilter := inProjects(`zio-s3`),
     //conflict with the dependency zio-nio & sbt-mdoc
-    excludeDependencies += "org.scala-lang.modules" % "scala-collection-compat_3"
+    excludeDependencies += "org.scala-lang.modules" % "scala-collection-compat_3",
+    publish / skip := true
   )
   .dependsOn(`zio-s3`)
   .enablePlugins(WebsitePlugin)
